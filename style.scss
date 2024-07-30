@@ -1,0 +1,309 @@
+@import "fonts/fonts";
+* {
+	padding: 0;
+	margin: 0;
+	outline: none;
+}
+$max-width: 550px;
+$bg-color: #61a619;
+$border-color: rgba(255, 151, 98, 0.98);
+
+
+// Define colors for each provider
+$providers: (
+	bog: (
+		bg-color: #ff600a,
+		border-color: rgba(255, 151, 98, 0.98),
+		body-bg: #f4f4f4
+	),
+	betlive: (
+		bg-color: #242730,
+		border-color: #242730,
+		body-bg: #242730
+	)
+);
+
+// Function to get color based on provider and key
+@function get-color($provider, $color-key) {
+	@return map-get(map-get($providers, $provider), $color-key);
+}
+
+@mixin innerMaxWidth($mar,$mw) {
+	width: 100%;
+	max-width: $mw;
+	margin: $mar;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	font-family: 'lbet-mt',sans-serif;
+	font-weight: normal;
+	font-style: normal;
+	position: relative;
+	background: #f4f4f4;
+}
+
+// Example usage with @each directive
+@each $provider, $colors in $providers {
+	body[data-provider="#{$provider}"] {
+		background: map-get($colors, body-bg) !important;
+	}
+	body[data-provider="#{$provider}"] .provider .actions button {
+		background-color: map-get($colors, bg-color);
+		border: 1px solid map-get($colors, border-color);
+	}
+
+	body[data-provider="#{$provider}"] .input_label {
+		input:focus {
+			border:1px solid map-get($colors, border-color) !important;
+			& + label {
+				color: map-get($colors, border-color) !important;
+			}
+		}
+	}
+}
+
+
+.wrap {
+	width: 100%;
+	max-width: 650px;
+}
+.logo {
+	padding: 10px;
+	img {
+		max-width: 200px;
+	}
+}
+.input_label {
+	position: relative;
+
+	box-shadow: unset;
+	transition: ease 2s all;
+	flex: 1;
+	min-width: 50%;
+	input {
+		width: 100%;
+		padding: 26px 18px 10px;
+		background: none;
+		box-shadow: unset;
+		border:1px solid rgba(0, 0, 0, 0.16);
+		border-radius: 4px;
+		box-sizing: border-box;
+	}
+	label {
+		border: none;
+		position: absolute;
+		top:50%;
+		left: 18px;
+		transform: translateY(-50%);
+		color: rgba(0, 0, 0, 0.32);
+		font-size: 14px;
+		transition: ease .3s all;
+	}
+	input:focus {
+		border:1px solid $border-color;
+		& + label {
+			color: $border-color;
+			top:25%;
+		}
+	}
+	input[value]:not(:focus):not([value=""]) + label {
+		top:25%;
+		color: rgba(0, 0, 0, 0.6);
+	}
+}
+.provider {
+	padding: 30px 20px 20px;
+	margin: auto;
+	background:#fcfcfc;
+	border-radius: 12px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	align-items: center;
+
+	.title {
+		@include innerMaxWidth(auto,$max-width);
+		padding-bottom: 20px;
+	}
+	.form {
+		display: grid;
+		grid-template-columns: auto auto;
+		gap:20px;
+		@include innerMaxWidth(auto,$max-width);
+
+	}
+	.rules {
+		padding-top: 30px;
+		@include innerMaxWidth(auto,$max-width);
+		-webkit-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		label {
+			font-size: 14px;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+	.actions {
+		@include innerMaxWidth(auto,$max-width);
+		padding: 30px 0 10px;
+		button {
+			width: 100%;
+			border: none;
+			height: 56px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: $bg-color;
+			color: #fff;
+			font-size: 16px;
+			font-family: 'lbet-mt',sans-serif;
+			border-radius: 4px;
+			&:hover {
+				cursor: pointer;
+				filter: brightness(1.2);
+			}
+		}
+	}
+}
+.otp-modal {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	z-index: 9;
+	background: rgba(0, 0, 0, 0.2);
+	display: none;
+	justify-content: center;
+	align-items: center;
+
+
+	.otp-box {
+		background: #fff;
+		padding: 20px 30px;
+		width: 100%;
+		max-width: 300px;
+		border-radius: 12px;
+		position: relative;
+		.close {
+			position: absolute;
+			top: -15px;
+			right: -15px;
+			z-index: 9;
+			width: 50px;
+			height: 50px;
+			background: #f3f3f3;
+			border-radius: 40px;
+			box-shadow: 0 0 10px #ccc;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			img {
+				height: 30px;
+			}
+			&:hover {
+				cursor: pointer;
+				background: #fff7e6;
+			}
+		}
+		p {
+			font-size: 14px;
+			padding-top: 5px;
+			font-family: sans-serif;
+		}
+		input {
+			font-size: 20px;
+			padding: 26px 18px 5px;
+			letter-spacing: 5px;
+			&::-webkit-outer-spin-button,
+			&::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+			}
+		}
+		.resend {
+			padding: 15px 0;
+			font-size: 14px;
+			display: none;
+		}
+		.timer {
+			position: absolute;
+			top: 50%;
+			right: 20px;
+			transform: translateY(-50%);
+			font-size: 18px;
+		}
+	}
+	.otp-actions {
+		padding-top: 15px;
+		display: flex;
+		justify-content: center;
+		button {
+			//width: 100%;
+			border: none;
+			height: 50px;
+			display: flex;
+			padding: 0 20px;
+			justify-content: center;
+			align-items: center;
+			background: $bg-color;
+			color: #fff;
+			font-size: 16px;
+			font-family: 'lbet-mt',sans-serif;
+			border-radius: 4px;
+			&:hover {
+				cursor: pointer;
+				filter: brightness(1.2);
+			}
+		}
+	}
+}
+
+.z-alert {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	z-index: 10;
+	background: rgba(0, 0, 0, 0.2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+
+	.z-alert-box {
+		background: #fff;
+		padding: 20px 30px;
+		width: 100%;
+		max-width: 400px;
+		border-radius: 12px;
+		position: relative;
+		overflow: hidden;
+		.z-alert-close {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 9;
+			width: 50px;
+			height: 50px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-bottom-left-radius: 12px;
+			img {
+				height: 30px;
+			}
+			&:hover {
+				cursor: pointer;
+				background: #fff7e6;
+			}
+		}
+		p {
+			font-size: 16px;
+			padding-top: 5px;
+			font-family: sans-serif;
+		}
+
+	}
+}

@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'lbet-mt';
+  src: url('./fonts/lbet-mt-light.woff2') format('woff2'),
+  url('./fonts/lbet-mt-light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lbet-mt';
+  src: url('./fonts/lbet-mt-regular.woff2') format('woff2'),
+  url('./fonts/lbet-mt-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'lbet-mt';
+  src: url('./fonts/lbet-mt-bold.woff2') format('woff2'),
+  url('./fonts/lbet-mt-bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'lbet-mt';
+  src: url('./fonts/lbet-mt-black.woff2') format('woff2'),
+  url('./fonts/lbet-mt-black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+}

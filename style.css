@@ -1,0 +1,317 @@
+@font-face {
+  font-family: "lbet-mt";
+  src: url("./fonts/lbet-mt-light.woff2") format("woff2"), url("./fonts/lbet-mt-light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "lbet-mt";
+  src: url("./fonts/lbet-mt-regular.woff2") format("woff2"), url("./fonts/lbet-mt-regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "lbet-mt";
+  src: url("./fonts/lbet-mt-bold.woff2") format("woff2"), url("./fonts/lbet-mt-bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "lbet-mt";
+  src: url("./fonts/lbet-mt-black.woff2") format("woff2"), url("./fonts/lbet-mt-black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+* {
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "lbet-mt", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  position: relative;
+  background: #f4f4f4;
+}
+
+body[data-provider=bog] {
+  background: #f4f4f4 !important;
+}
+
+body[data-provider=bog] .provider .actions button {
+  background-color: #ff600a;
+  border: 1px solid rgba(255, 151, 98, 0.98);
+}
+
+body[data-provider=bog] .input_label input:focus {
+  border: 1px solid rgba(255, 151, 98, 0.98) !important;
+}
+body[data-provider=bog] .input_label input:focus + label {
+  color: rgba(255, 151, 98, 0.98) !important;
+}
+
+body[data-provider=betlive] {
+  background: #242730 !important;
+}
+
+body[data-provider=betlive] .provider .actions button {
+  background-color: #242730;
+  border: 1px solid #242730;
+}
+
+body[data-provider=betlive] .input_label input:focus {
+  border: 1px solid #242730 !important;
+}
+body[data-provider=betlive] .input_label input:focus + label {
+  color: #242730 !important;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 650px;
+}
+
+.logo {
+  padding: 10px;
+}
+.logo img {
+  max-width: 200px;
+}
+
+.input_label {
+  position: relative;
+  box-shadow: unset;
+  transition: ease 2s all;
+  flex: 1;
+  min-width: 50%;
+}
+.input_label input {
+  width: 100%;
+  padding: 26px 18px 10px;
+  background: none;
+  box-shadow: unset;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.input_label label {
+  border: none;
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.32);
+  font-size: 14px;
+  transition: ease 0.3s all;
+}
+.input_label input:focus {
+  border: 1px solid rgba(255, 151, 98, 0.98);
+}
+.input_label input:focus + label {
+  color: rgba(255, 151, 98, 0.98);
+  top: 25%;
+}
+.input_label input[value]:not(:focus):not([value=""]) + label {
+  top: 25%;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.provider {
+  padding: 30px 20px 20px;
+  margin: auto;
+  background: #fcfcfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+.provider .title {
+  width: 100%;
+  max-width: 550px;
+  margin: auto;
+  padding-bottom: 20px;
+}
+.provider .form {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 20px;
+  width: 100%;
+  max-width: 550px;
+  margin: auto;
+}
+.provider .rules {
+  padding-top: 30px;
+  width: 100%;
+  max-width: 550px;
+  margin: auto;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.provider .rules label {
+  font-size: 14px;
+}
+.provider .rules label:hover {
+  cursor: pointer;
+}
+.provider .actions {
+  width: 100%;
+  max-width: 550px;
+  margin: auto;
+  padding: 30px 0 10px;
+}
+.provider .actions button {
+  width: 100%;
+  border: none;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #61a619;
+  color: #fff;
+  font-size: 16px;
+  font-family: "lbet-mt", sans-serif;
+  border-radius: 4px;
+}
+.provider .actions button:hover {
+  cursor: pointer;
+  filter: brightness(1.2);
+}
+
+.otp-modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.2);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.otp-modal .otp-box {
+  background: #fff;
+  padding: 20px 30px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  position: relative;
+}
+.otp-modal .otp-box .close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 9;
+  width: 50px;
+  height: 50px;
+  background: #f3f3f3;
+  border-radius: 40px;
+  box-shadow: 0 0 10px #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.otp-modal .otp-box .close img {
+  height: 30px;
+}
+.otp-modal .otp-box .close:hover {
+  cursor: pointer;
+  background: #fff7e6;
+}
+.otp-modal .otp-box p {
+  font-size: 14px;
+  padding-top: 5px;
+  font-family: sans-serif;
+}
+.otp-modal .otp-box input {
+  font-size: 20px;
+  padding: 26px 18px 5px;
+  letter-spacing: 5px;
+}
+.otp-modal .otp-box input::-webkit-outer-spin-button, .otp-modal .otp-box input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.otp-modal .otp-box .resend {
+  padding: 15px 0;
+  font-size: 14px;
+  display: none;
+}
+.otp-modal .otp-box .timer {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+.otp-modal .otp-actions {
+  padding-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+.otp-modal .otp-actions button {
+  border: none;
+  height: 50px;
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  background: #61a619;
+  color: #fff;
+  font-size: 16px;
+  font-family: "lbet-mt", sans-serif;
+  border-radius: 4px;
+}
+.otp-modal .otp-actions button:hover {
+  cursor: pointer;
+  filter: brightness(1.2);
+}
+
+.z-alert {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.z-alert .z-alert-box {
+  background: #fff;
+  padding: 20px 30px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.z-alert .z-alert-box .z-alert-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom-left-radius: 12px;
+}
+.z-alert .z-alert-box .z-alert-close img {
+  height: 30px;
+}
+.z-alert .z-alert-box .z-alert-close:hover {
+  cursor: pointer;
+  background: #fff7e6;
+}
+.z-alert .z-alert-box p {
+  font-size: 16px;
+  padding-top: 5px;
+  font-family: sans-serif;
+}
+
+/*# sourceMappingURL=style.css.map */

